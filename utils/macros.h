@@ -49,10 +49,12 @@
 
 #define PI_UNICODE    "\u03C0"
 #define XI_UNICODE    "\u03BE"
+#define MU_UNICODE    "\u03BC"
 /* #define PIMAX_UNICODE PI_UNICODE"\u2098""\u2090""\u2093" */
 /* #define RP_UNICODE    "\u209A" */
 #define PIMAX_UNICODE "pimax"
 #define RP_UNICODE    "rp"
+#define S_UNICODE     "s"
 #define THETA_UNICODE "\u03B8"
 #define OMEGA_UNICODE "\u03C9"
 
@@ -60,12 +62,16 @@
 #define XI_SAFE    "xi"
 #define PIMAX_SAFE "pimax"
 #define RP_SAFE "rp"
+#define MU_SAFE "mu"
+#define S_SAFE "s"
 #define THETA_SAFE "theta"
 #define OMEGA      "omega"
 
 
 #ifdef USE_UNICODE
 #define PI_CHAR PI_UNICODE
+#define MU_CHAR MU_UNICODE
+#define S_CHAR S_UNICODE
 #define XI_CHAR XI_UNICODE
 #define PIMAX_CHAR PIMAX_UNICODE
 #define RP_CHAR  RP_UNICODE
@@ -82,6 +88,8 @@ the ROOT DIRECTORY of ``Corrfunc`` and re-install the entire packge.\n"
 #else
 #define PI_CHAR PI_SAFE
 #define XI_CHAR XI_SAFE
+#define MU_CHAR MU_SAFE
+#define S_CHAR S_SAFE
 #define PIMAX_CHAR PIMAX_SAFE
 #define RP_CHAR    RP_SAFE
 #define THETA_CHAR THETA_SAFE

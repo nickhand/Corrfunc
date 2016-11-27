@@ -1,6 +1,6 @@
 include ../mocks.options ../common.mk
 
-targets:= dirs DDrppi wtheta vpf examples
+targets:= dirs DDrppi DDsmu wtheta vpf examples
 ifneq ($(COMPILE_PYTHON_EXT), 0)
   targets += python_bindings
 else
@@ -14,10 +14,13 @@ dirs: | ../lib ../bin ../include
 ../lib ../bin ../include:
 	mkdir -p $@
 
-.PHONY: clean celna clena celan $(targets) tests distclean realclean distclena realclena dirs test  python_bindings libs all 
+.PHONY: clean celna clena celan $(targets) tests distclean realclean distclena realclena dirs test	python_bindings libs all 
 
 DDrppi:
 	$(MAKE) -C DDrppi
+
+DDsmu:
+	$(MAKE) -C DDsmu
 
 wtheta:
 	$(MAKE) -C wtheta
@@ -38,6 +41,7 @@ realclena:realclean
 realclean:
 	$(MAKE) clean
 	$(MAKE) -C DDrppi distclean
+	$(MAKE) -C DDsmu distclean
 	$(MAKE) -C wtheta distclean
 	$(MAKE) -C vpf distclean
 	$(MAKE) -C python_bindings distclean
@@ -46,6 +50,7 @@ realclean:
 
 clean:
 	$(MAKE) -C DDrppi clean
+	$(MAKE) -C DDsmu clean
 	$(MAKE) -C wtheta clean
 	$(MAKE) -C vpf clean
 	$(MAKE) -C examples clean
@@ -58,12 +63,14 @@ celna: clean
 
 install: examples | dirs 
 	$(MAKE) -C DDrppi install
+	$(MAKE) -C DDsmu install
 	$(MAKE) -C wtheta install
 	$(MAKE) -C vpf install
 	$(MAKE) -C python_bindings install
 
 libs:  | dirs
 	$(MAKE) -C DDrppi lib
+	$(MAKE) -C DDsmu lib
 	$(MAKE) -C wtheta lib
 	$(MAKE) -C vpf lib
 
