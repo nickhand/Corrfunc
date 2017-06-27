@@ -140,26 +140,26 @@ static PyMethodDef module_methods[] = {
      "    The redshift multiplied by speed of light for the galaxies. The code will\n"
      "    checks that cz has been supplied by comparing with a threshold (currently\n"
      "    set to 10, defined in function check_ra_dec_cz in file\n"
-     "    `DDrppi/countpairs_rp_pi_mocks_impl.c.src`) and multiplies by the speed of light if\n"
+     "    `DDrppi_mocks/countpairs_rp_pi_mocks_impl.c.src`) and multiplies by the speed of light if\n"
      "    max z is less than that threshold. If you really want to change the speed\n"
      "    of light, then edit the macro in `ROOT/utils/set_cosmo_dist.h`.\n"
      "\n"
-     
+
      "weights1 : array-like, real (float/double), shape (n_particles,) or (n_weights_per_particle,n_particles), optional\n"
      "   Weights for computing a weighted pair count.\n\n"
-     
+
      "weight_type : str, optional\n"
      "   The type of pair weighting to apply.\n"
-     "   Options: \"pair_product\", None\n" 
+     "   Options: \"pair_product\", None\n"
      "   Default: None.\n\n"
-     
+
      "RA2/DEC2/CZ2: float/double (default double)\n"
      "    Same as for RA1/DEC1/CZ1\n"
      "\n"
-     
+
      "weights2\n : array-like, real (float/double), shape (n_particles,) or (n_weights_per_particle,n_particles), optional\n"
      "   Weights for computing a weighted pair count."
-     
+
      "is_comoving_dist: boolean (default false)\n"
      "   Boolean flag to indicate that ``cz`` values have already been\n"
      "   converted into co-moving distances. This flag allows arbitrary\n"
@@ -200,7 +200,7 @@ static PyMethodDef module_methods[] = {
      "  set on the current computer. However, if you set ``isa`` to, say,\n"
      "  ``AVX`` and ``AVX`` is not available on the computer, then the code will\n"
      "  revert to using ``FALLBACK`` (even though ``SSE42`` might be available).\n\n"
-       
+
      "  Unless you are benchmarking the different instruction sets, you should\n"
      "  always leave ``isa`` to the default value. And if you *are* benchmarking,\n"
      "  then the integer values correspond to the ``enum`` for the instruction set\n"
@@ -219,7 +219,7 @@ static PyMethodDef module_methods[] = {
      "considered in that ("RP_CHAR", "PI_CHAR") bin. ``npairs``contains the number of pairs\n"
      "in that bin and can be used to compute the actual "XI_CHAR"("RP_CHAR", "PI_CHAR") by\n"
      "combining with RR counts. The C struct is identical to the one in \n"
-     "`theory/xi_rp_pi/countpairs_rp_pi.h`)\n"
+     "`theory/DDrppi/countpairs_rp_pi.h`)\n"
      "\n"
      "Example\n"
      "-------\n"
@@ -304,22 +304,22 @@ static PyMethodDef module_methods[] = {
          "    max z is less than that threshold. If you really want to change the speed\n"
          "    of light, then edit the macro in `ROOT/utils/set_cosmo_dist.h`.\n"
          "\n"
-     
+
          "weights1 : array-like, real (float/double), shape (n_particles,) or (n_weights_per_particle,n_particles), optional\n"
          "   Weights for computing a weighted pair count.\n\n"
-     
+
          "weight_type : str, optional\n"
          "   The type of pair weighting to apply.\n"
-         "   Options: \"pair_product\", None\n" 
+         "   Options: \"pair_product\", None\n"
          "   Default: None.\n\n"
-     
+
          "RA2/DEC2/CZ2: float/double (default double)\n"
          "    Same as for RA1/DEC1/CZ1\n"
          "\n"
-     
+
          "weights2\n : array-like, real (float/double), shape (n_particles,) or (n_weights_per_particle,n_particles), optional\n"
          "   Weights for computing a weighted pair count."
-     
+
          "is_comoving_dist: boolean (default false)\n"
          "   Boolean flag to indicate that ``cz`` values have already been\n"
          "   converted into co-moving distances. This flag allows arbitrary\n"
@@ -360,7 +360,7 @@ static PyMethodDef module_methods[] = {
          "  set on the current computer. However, if you set ``isa`` to, say,\n"
          "  ``AVX`` and ``AVX`` is not available on the computer, then the code will\n"
          "  revert to using ``FALLBACK`` (even though ``SSE42`` might be available).\n\n"
-       
+
          "  Unless you are benchmarking the different instruction sets, you should\n"
          "  always leave ``isa`` to the default value. And if you *are* benchmarking,\n"
          "  then the integer values correspond to the ``enum`` for the instruction set\n"
@@ -436,21 +436,21 @@ static PyMethodDef module_methods[] = {
      "    then the code will shift the entire array by -90 to put declinations in\n"
      "    the [-90, 90] range. If the code finds declinations more than 180, then\n"
      "    it assumes RA and DEC have been swapped and aborts with that message.\n"
-     
+
      "weights1 : array-like, real (float/double), shape (n_particles,) or (n_weights_per_particle,n_particles), optional\n"
      "   Weights for computing a weighted pair count.\n\n"
-     
+
      "weight_type : str, optional\n"
      "   The type of pair weighting to apply.\n"
-     "   Options: \"pair_product\", None\n" 
+     "   Options: \"pair_product\", None\n"
      "   Default: None.\n\n"
-     
+
      "RA2/DEC2: float/double (default double)\n"
      "    Same as for RA1/DEC1\n"
-     
+
      "weights2\n : array-like, real (float/double), shape (n_particles,) or (n_weights_per_particle,n_particles), optional\n"
      "   Weights for computing a weighted pair count."
-     
+
      "verbose : boolean (default false)\n"
      "   Boolean flag to control output of informational messages\n"
      "\n"
@@ -509,9 +509,9 @@ static PyMethodDef module_methods[] = {
      "A tuple (results, time) \n"
      "\n"
      "results : Python list \n"
-     "   Contains [thetamin, thetamax, thetaavg, npairs] for each angular bin \n"
+     "   Contains [thetamin, thetamax, thetaavg, npairs, weightavg] for each angular bin \n"
      "   specified in the ``binfile``. If ``output_thetaavg`` is not set, then\n"
-     "   ``thetaravg`` will be set to 0.0 for all bins. ``npairs`` contains the number of\n"
+     "   ``thetaravg`` will be set to 0.0 for all bins; similarly for ``weightavg``. ``npairs`` contains the number of\n"
      "   pairs in that bin and can be used to compute the actual "OMEGA_CHAR"("THETA_CHAR")\n"
      "   by combining  DD, (DR) and RR counts. See ``~Corrfunc.utils.convert_3d_counts_to_cf``\n"
      "\n"
@@ -708,7 +708,7 @@ static PyMethodDef module_methods[] = {
      "   a sphere of radius ``rmax`` contains *exactly* ``N`` galaxies. For \n"
      "   example, pN[0] (p0, the void probibility function) is the probability\n"
      "   that a sphere of radius ``rmax`` contains 0 galaxies.\n"
-     "\n" 
+     "\n"
     "time : double\n"
     "   if ``c_api_timer`` is set, then the return value contains the time spent\n"
     "   in the API; otherwise time is set to 0.0\n"
@@ -747,7 +747,7 @@ static PyMethodDef module_methods[] = {
     "                        RA, DEC, CZ,\n"
     "                        verbose=True,\n"
     "                        is_comoving_dist=True)\n"
-    "\n" 
+    "\n"
     },
     {NULL, NULL, 0, NULL}
 };
@@ -758,7 +758,7 @@ static PyObject *countpairs_mocks_error_out(PyObject *module, const char *msg)
 #if PY_MAJOR_VERSION < 3
     (void) module;//to avoid unused warning with python2
 #endif
-    
+
     struct module_state *st = GETSTATE(module);
     PyErr_SetString(st->error, msg);
     PyErr_Print();
@@ -821,7 +821,7 @@ PyObject *PyInit__countpairs_mocks(void)
     import_array();
 
     highest_isa_mocks = instrset_detect();
-    
+
 #if PY_MAJOR_VERSION >= 3
     return module;
 #endif
@@ -831,18 +831,18 @@ PyObject *PyInit__countpairs_mocks(void)
 static int print_kwlist_into_msg(char *msg, const size_t totsize, size_t len, char *kwlist[], const size_t nitems)
 {
     for(size_t i=0;i<nitems;i++) {
-        
+
         if(len+strlen(kwlist[i]) >= totsize-2) {
             return EXIT_FAILURE;
         }
-        
+
         memcpy(msg+len, kwlist[i], strlen(kwlist[i]));
         len += strlen(kwlist[i]);
         msg[len] = ',';
         msg[len+1] = ' ';
         len += 2;
     }
-    
+
     msg[len]='\0';
     return EXIT_SUCCESS;
 }
@@ -853,24 +853,24 @@ static int print_kwlist_into_msg(char *msg, const size_t totsize, size_t len, ch
 static int64_t check_dims_and_datatype(PyObject *module, PyArrayObject *x1_obj, PyArrayObject *y1_obj, PyArrayObject *z1_obj, PyArrayObject *weights1_obj, size_t *element_size)
 {
     char msg[1024];
-    
+
     const int check_weights = weights1_obj != NULL;
 
     /* All the position arrays should be 1-D*/
     const int nxdims = PyArray_NDIM(x1_obj);
     const int nydims = PyArray_NDIM(y1_obj);
     const int nzdims = PyArray_NDIM(z1_obj);
-    
+
     if(nxdims != 1 || nydims != 1 || nzdims != 1) {
         snprintf(msg, 1024, "ERROR: Expected 1-D numpy arrays.\nFound (nxdims, nydims, nzdims) = (%d, %d, %d) instead",
                  nxdims, nydims, nzdims);
         countpairs_mocks_error_out(module, msg);
         return -1;
     }
-    
+
     /* The weights array can be 1-D or 2-D of shape (n_weights, n_particles) */
     const int n_weight_dims = check_weights ? PyArray_NDIM(weights1_obj) : 1;
-    
+
     if(n_weight_dims != 1 && n_weight_dims != 2) {
         snprintf(msg, 1024, "ERROR: Expected 1-D or 2-D weight array.\nFound n_weight_dims = %d instead", n_weight_dims);
         countpairs_mocks_error_out(module, msg);
@@ -904,7 +904,7 @@ static int64_t check_dims_and_datatype(PyObject *module, PyArrayObject *x1_obj, 
         countpairs_mocks_error_out(module, msg);
         return -1;
     }
-    
+
     // Current version of the code only supports weights of the same dtype as positions
     if( x_type != y_type || y_type != z_type || (check_weights && z_type != weights_type)) {
         PyArray_Descr *x_descr = PyArray_DescrFromType(x_type);
@@ -924,12 +924,12 @@ static int64_t check_dims_and_datatype(PyObject *module, PyArrayObject *x1_obj, 
         countpairs_mocks_error_out(module, msg);
         return -1;
     }
-    
+
     /* Check if the number of elements in the 3 Python arrays are identical */
     const int64_t nx1 = (int64_t)PyArray_SIZE(x1_obj);
     const int64_t ny1 = (int64_t)PyArray_SIZE(y1_obj);
     const int64_t nz1 = (int64_t)PyArray_SIZE(z1_obj);
-    
+
     if(nx1 != ny1 || ny1 != nz1) {
       snprintf(msg, 1024, "ERROR: Expected arrays to have the same number of elements in all 3-dimensions.\nFound (nx, ny, nz) = (%"PRId64", %"PRId64", %"PRId64") instead",
                nx1, ny1, nz1);
@@ -954,7 +954,7 @@ static int64_t check_dims_and_datatype(PyObject *module, PyArrayObject *x1_obj, 
     } else {
       *element_size = sizeof(double);
     }
-    
+
     return nx1;
 }
 
@@ -1013,7 +1013,7 @@ static int64_t check_dims_and_datatype_ra_dec(PyObject *module, PyArrayObject *x
         countpairs_mocks_error_out(module, msg);
         return -1;
     }
-    
+
     /* Check if the number of elements in the 3 Python arrays are identical */
     const int64_t nx1 = (int64_t)PyArray_SIZE(x1_obj);
     const int64_t ny1 = (int64_t)PyArray_SIZE(y1_obj);
@@ -1032,7 +1032,7 @@ static int64_t check_dims_and_datatype_ra_dec(PyObject *module, PyArrayObject *x
     } else {
       *element_size = sizeof(double);
     }
-    
+
     return nx1;
 }
 
@@ -1042,11 +1042,11 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
     //Error-handling is global in python2 -> stored in struct module_state _struct declared at the top of this file
 #if PY_MAJOR_VERSION < 3
     (void) self;
-    PyObject *module = NULL;//should not be used -> setting to NULL so any attempts to dereference will result in a crash. 
+    PyObject *module = NULL;//should not be used -> setting to NULL so any attempts to dereference will result in a crash.
 #else
     //In python3, self is simply the module object that was returned earlier by init
     PyObject *module = self;
-#endif    
+#endif
 
     //x1->ra (phi), y1-> declination (theta1), z1->cz (cz1)
     //x2->ra (ph2), y2-> declination (theta2), z2->cz (cz2)
@@ -1125,16 +1125,16 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
 
         char msg[1024];
         int len=snprintf(msg, 1024,"ArgumentError: In DDrppi_mocks> Could not parse the arguments. Input parameters are: \n");
-        
+
         /* How many keywords do we have? Subtract 1 because of the last NULL */
         const size_t nitems = sizeof(kwlist)/sizeof(*kwlist) - 1;
         int status = print_kwlist_into_msg(msg, 1024, len, kwlist, nitems);
         if(status != EXIT_SUCCESS) {
             fprintf(stderr,"Error message does not contain all of the keywords\n");
         }
-        
+
         countpairs_mocks_error_out(module,msg);
-        
+
         Py_RETURN_NONE;
     }
 
@@ -1152,16 +1152,16 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
     }
 
 
-    
+
     /* We have numpy arrays and all the required inputs*/
     /* How many data points are there? And are they all of floating point type */
     size_t element_size;
     const int64_t ND1 = check_dims_and_datatype(module, x1_obj, y1_obj, z1_obj, weights1_obj, &element_size);
     if(ND1 == -1) {
-        //Error has already been set -> simply return 
+        //Error has already been set -> simply return
         Py_RETURN_NONE;
     }
-    
+
     /* Ensure the weights are of the right shape (n_weights, n_particles) */
     if(weights1_obj != NULL){
         // A numpy dimension of length -1 will be expanded to n_weights
@@ -1169,7 +1169,7 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
         PyArray_Dims pdims = {.ptr = &(dims[0]), .len = 2};
         weights1_obj = (PyArrayObject *) PyArray_Newshape(weights1_obj, &pdims, NPY_CORDER);
     }
-    
+
     /* Validate the user's choice of weighting method */
     weight_method_t weighting_method;
     int wstatus = get_weight_method_by_name(weighting_method_str, &weighting_method);
@@ -1188,7 +1188,7 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
         countpairs_mocks_error_out(module, msg);
         Py_RETURN_NONE;
     }
-    
+
     if(extra.weights0.num_weights > 0 && found_weights > MAX_NUM_WEIGHTS){
         char msg[1024];
         snprintf(msg, 1024, "ValueError: In %s: Provided %d weights-per-particle, but the code was compiled with MAX_NUM_WEIGHTS=%d.\n",
@@ -1212,11 +1212,11 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
             countpairs_mocks_error_out(module, msg);
             Py_RETURN_NONE;
         }
-        
+
         size_t element_size2;
         ND2 = check_dims_and_datatype(module, x2_obj, y2_obj, z2_obj, weights2_obj, &element_size2);
         if(ND2 == -1) {
-            //Error has already been set -> simply return 
+            //Error has already been set -> simply return
             Py_RETURN_NONE;
         }
         /* Ensure the weights are of the right shape (n_weights, n_particles) */
@@ -1225,7 +1225,7 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
             PyArray_Dims pdims = {.ptr = &(dims[0]), .len = 2};
             weights2_obj = (PyArrayObject *) PyArray_Newshape(weights2_obj, &pdims, NPY_CORDER);
         }
-        
+
         if(element_size != element_size2) {
             snprintf(msg, 1024, "TypeError: In %s: The two arrays must have the same data-type. First array is of type %s while second array is of type %s\n",
                      __FUNCTION__, element_size == 4 ? "floats":"doubles", element_size2 == 4 ? "floats":"doubles");
@@ -1292,7 +1292,7 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
         }
     }
     options.float_type = element_size;
-    
+
     /* Pack the weights into extra_options */
     for(int64_t w = 0; w < extra.weights0.num_weights; w++){
         extra.weights0.weights[w] = (char *) weights1 + w*ND1*element_size;
@@ -1300,7 +1300,7 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
             extra.weights1.weights[w] = (char *) weights2 + w*ND2*element_size;
         }
     }
-    
+
     NPY_BEGIN_THREADS_DEF;
     NPY_BEGIN_THREADS;
 
@@ -1320,7 +1320,7 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
         c_api_time = options.c_api_time;
     }
     NPY_END_THREADS;
-    
+
     /* Clean up. */
     Py_DECREF(x1_array);Py_DECREF(y1_array);Py_DECREF(z1_array);Py_XDECREF(weights1_array);//x1 should absolutely not be NULL
     Py_XDECREF(x2_array);Py_XDECREF(y2_array);Py_XDECREF(z2_array);Py_XDECREF(weights2_array);//x2 might be NULL depending on value of autocorr
@@ -1328,8 +1328,8 @@ static PyObject *countpairs_countpairs_rp_pi_mocks(PyObject *self, PyObject *arg
     if(status != EXIT_SUCCESS) {
         Py_RETURN_NONE;
     }
-    
-    
+
+
 #if 0
     /* Output pairs*/
     for(int i=1;i<results.nbin;i++) {
@@ -1368,11 +1368,11 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
     //Error-handling is global in python2 -> stored in struct module_state _struct declared at the top of this file
 #if PY_MAJOR_VERSION < 3
     (void) self;
-    PyObject *module = NULL;//should not be used -> setting to NULL so any attempts to dereference will result in a crash. 
+    PyObject *module = NULL;//should not be used -> setting to NULL so any attempts to dereference will result in a crash.
 #else
     //In python3, self is simply the module object that was returned earlier by init
     PyObject *module = self;
-#endif    
+#endif
 
     //x1->ra (phi), y1-> declination (theta1), z1->cz (cz1)
     //x2->ra (ph2), y2-> declination (theta2), z2->cz (cz2)
@@ -1451,16 +1451,16 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
 
         char msg[1024];
         int len=snprintf(msg, 1024,"ArgumentError: In DDsmu_mocks> Could not parse the arguments. Input parameters are: \n");
-        
+
         /* How many keywords do we have? Subtract 1 because of the last NULL */
         const size_t nitems = sizeof(kwlist)/sizeof(*kwlist) - 1;
         int status = print_kwlist_into_msg(msg, 1024, len, kwlist, nitems);
         if(status != EXIT_SUCCESS) {
             fprintf(stderr,"Error message does not contain all of the keywords\n");
         }
-        
+
         countpairs_mocks_error_out(module,msg);
-        
+
         Py_RETURN_NONE;
     }
 
@@ -1475,16 +1475,16 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
         options.bin_refine_factors[1] = ybin_ref;
         options.bin_refine_factors[2] = zbin_ref;
         set_bin_refine_scheme(&options, BINNING_CUST);//custom binning -> code will honor requested binning scheme
-    }    
+    }
     /* We have numpy arrays and all the required inputs*/
     /* How many data points are there? And are they all of floating point type */
     size_t element_size;
     const int64_t ND1 = check_dims_and_datatype(module, x1_obj, y1_obj, z1_obj, weights1_obj, &element_size);
     if(ND1 == -1) {
-        //Error has already been set -> simply return 
+        //Error has already been set -> simply return
         Py_RETURN_NONE;
     }
-    
+
     /* Ensure the weights are of the right shape (n_weights, n_particles) */
     if(weights1_obj != NULL){
         // A numpy dimension of length -1 will be expanded to n_weights
@@ -1492,7 +1492,7 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
         PyArray_Dims pdims = {.ptr = &(dims[0]), .len = 2};
         weights1_obj = (PyArrayObject *) PyArray_Newshape(weights1_obj, &pdims, NPY_CORDER);
     }
-    
+
     /* Validate the user's choice of weighting method */
     weight_method_t weighting_method;
     int wstatus = get_weight_method_by_name(weighting_method_str, &weighting_method);
@@ -1511,7 +1511,7 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
         countpairs_mocks_error_out(module, msg);
         Py_RETURN_NONE;
     }
-    
+
     if(extra.weights0.num_weights > 0 && found_weights > MAX_NUM_WEIGHTS){
         char msg[1024];
         snprintf(msg, 1024, "ValueError: In %s: Provided %d weights-per-particle, but the code was compiled with MAX_NUM_WEIGHTS=%d.\n",
@@ -1535,11 +1535,11 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
             countpairs_mocks_error_out(module, msg);
             Py_RETURN_NONE;
         }
-        
+
         size_t element_size2;
         ND2 = check_dims_and_datatype(module, x2_obj, y2_obj, z2_obj, weights2_obj, &element_size2);
         if(ND2 == -1) {
-            //Error has already been set -> simply return 
+            //Error has already been set -> simply return
             Py_RETURN_NONE;
         }
         /* Ensure the weights are of the right shape (n_weights, n_particles) */
@@ -1548,7 +1548,7 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
             PyArray_Dims pdims = {.ptr = &(dims[0]), .len = 2};
             weights2_obj = (PyArrayObject *) PyArray_Newshape(weights2_obj, &pdims, NPY_CORDER);
         }
-        
+
         if(element_size != element_size2) {
             snprintf(msg, 1024, "TypeError: In %s: The two arrays must have the same data-type. First array is of type %s while second array is of type %s\n",
                      __FUNCTION__, element_size == 4 ? "floats":"doubles", element_size2 == 4 ? "floats":"doubles");
@@ -1615,7 +1615,7 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
         }
     }
     options.float_type = element_size;
-    
+
     /* Pack the weights into extra_options */
     for(int64_t w = 0; w < extra.weights0.num_weights; w++){
         extra.weights0.weights[w] = (char *) weights1 + w*ND1*element_size;
@@ -1623,7 +1623,7 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
             extra.weights1.weights[w] = (char *) weights2 + w*ND2*element_size;
         }
     }
-    
+
     NPY_BEGIN_THREADS_DEF;
     NPY_BEGIN_THREADS;
 
@@ -1643,7 +1643,7 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
         c_api_time = options.c_api_time;
     }
     NPY_END_THREADS;
-    
+
     /* Clean up. */
     Py_DECREF(x1_array);Py_DECREF(y1_array);Py_DECREF(z1_array);Py_XDECREF(weights1_array);//x1 should absolutely not be NULL
     Py_XDECREF(x2_array);Py_XDECREF(y2_array);Py_XDECREF(z2_array);Py_XDECREF(weights2_array);//x2 might be NULL depending on value of autocorr
@@ -1651,8 +1651,8 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
     if(status != EXIT_SUCCESS) {
         Py_RETURN_NONE;
     }
-    
-    
+
+
 #if 0
     /* Output pairs*/
     for(int i=1;i<results.nbin;i++) {
@@ -1686,18 +1686,16 @@ static PyObject *countpairs_countpairs_s_mu_mocks(PyObject *self, PyObject *args
     return Py_BuildValue("(Od)", ret, c_api_time);
 }
 
-
-
 static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     //Error-handling is global in python2 -> stored in struct module_state _struct declared at the top of this file
 #if PY_MAJOR_VERSION < 3
     (void) self;
-    PyObject *module = NULL;//should not be used -> setting to NULL so any attempts to dereference will result in a crash. 
+    PyObject *module = NULL;//should not be used -> setting to NULL so any attempts to dereference will result in a crash.
 #else
     //In python3, self is simply the module object that was returned earlier by init
     PyObject *module = self;
-#endif    
+#endif
 
     PyArrayObject *x1_obj=NULL, *y1_obj=NULL, *weights1_obj=NULL;
     PyArrayObject *x2_obj=NULL, *y2_obj=NULL, *weights2_obj=NULL;
@@ -1746,12 +1744,12 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
                                        &PyArray_Type,&x2_obj,//optional parameters -> if autocorr == 1, not checked; required if autocorr=0
                                        &PyArray_Type,&y2_obj,
                                        &PyArray_Type,&weights2_obj,
-                                       &(options.link_in_ra),
                                        &(options.link_in_dec),
+                                       &(options.link_in_ra),
                                        &(options.verbose),
                                        &(options.need_avg_sep),
                                        &(options.fast_acos),
-                                       &ra_bin_ref, &dec_bin_ref, 
+                                       &ra_bin_ref, &dec_bin_ref,
                                        &(options.max_cells_per_dim),
                                        &(options.c_api_timer),
                                        &(options.instruction_set),
@@ -1763,7 +1761,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
 
         char msg[1024];
         int len=snprintf(msg, 1024,"ArgumentError: In DDtheta_mocks> Could not parse the arguments. Input parameters are: \n");
-        
+
         /* How many keywords do we have? Subtract 1 because of the last NULL */
         const size_t nitems = sizeof(kwlist)/sizeof(*kwlist) - 1;
         int status = print_kwlist_into_msg(msg, 1024, len, kwlist, nitems);
@@ -1787,6 +1785,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
         set_bin_refine_scheme(&options, BINNING_CUST);//custom binning -> code will honor requested binning scheme
     }
 
+
     size_t element_size;
     /* We have numpy arrays and all the required inputs*/
     /* How many data points are there? And are they all of floating point type */
@@ -1795,7 +1794,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
         //Error has already been set -> simply return
         Py_RETURN_NONE;
     }
-    
+
     /* Ensure the weights are of the right shape (n_weights, n_particles) */
     if(weights1_obj != NULL){
         // A numpy dimension of length -1 will be expanded to n_weights
@@ -1803,7 +1802,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
         PyArray_Dims pdims = {.ptr = &(dims[0]), .len = 2};
         weights1_obj = (PyArrayObject *) PyArray_Newshape(weights1_obj, &pdims, NPY_CORDER);
     }
-    
+
     /* Validate the user's choice of weighting method */
     weight_method_t weighting_method;
     int wstatus = get_weight_method_by_name(weighting_method_str, &weighting_method);
@@ -1822,7 +1821,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
         countpairs_mocks_error_out(module, msg);
         Py_RETURN_NONE;
     }
-    
+
     if(extra.weights0.num_weights > 0 && found_weights > MAX_NUM_WEIGHTS){
         char msg[1024];
         snprintf(msg, 1024, "ValueError: In %s: Provided %d weights-per-particle, but the code was compiled with MAX_NUM_WEIGHTS=%d.\n",
@@ -1846,11 +1845,11 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
             countpairs_mocks_error_out(module, msg);
             Py_RETURN_NONE;
         }
-        
+
         size_t element_size2;
         ND2 = check_dims_and_datatype_ra_dec(module, x2_obj, y2_obj,&element_size2);
         if(ND2 == -1) {
-            //Error has already been set -> simply return 
+            //Error has already been set -> simply return
             Py_RETURN_NONE;
         }
         /* Ensure the weights are of the right shape (n_weights, n_particles) */
@@ -1859,7 +1858,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
             PyArray_Dims pdims = {.ptr = &(dims[0]), .len = 2};
             weights2_obj = (PyArrayObject *) PyArray_Newshape(weights2_obj, &pdims, NPY_CORDER);
         }
-        
+
         if(element_size != element_size2) {
             snprintf(msg, 1024, "TypeError: In %s: The two arrays must have the same data-type. First array is of type %s while second array is of type %s\n",
                      __FUNCTION__, element_size == 4 ? "floats":"doubles", element_size2 == 4 ? "floats":"doubles");
@@ -1867,7 +1866,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
             Py_RETURN_NONE;
         }
     }
-    
+
     /* Interpret the input objects as numpy arrays. */
     const int requirements = NPY_ARRAY_IN_ARRAY;
     PyObject *x1_array = NULL, *y1_array = NULL, *weights1_array = NULL;
@@ -1886,7 +1885,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
         }
     }
 
-    if (x1_array == NULL || y1_array == NULL || 
+    if (x1_array == NULL || y1_array == NULL ||
         (autocorr == 0 && (x2_array == NULL || y2_array == NULL))) {
         Py_XDECREF(x1_array);
         Py_XDECREF(y1_array);
@@ -1905,7 +1904,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
     /* Get pointers to the data as C-types. */
     void *phiD1 = NULL, *thetaD1 = NULL, *weights1=NULL;
     void *phiD2 = NULL, *thetaD2 = NULL, *weights2=NULL;
-    phiD1   = PyArray_DATA((PyArrayObject *) x1_array); 
+    phiD1   = PyArray_DATA((PyArrayObject *) x1_array);
     thetaD1 = PyArray_DATA((PyArrayObject *) y1_array);
     if(weights1_array != NULL){
         weights1 = PyArray_DATA((PyArrayObject *) weights1_array);
@@ -1918,7 +1917,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
             weights2 = PyArray_DATA((PyArrayObject *) weights2_array);
         }
     }
-    
+
     /* Pack the weights into extra_options */
     for(int64_t w = 0; w < extra.weights0.num_weights; w++){
         extra.weights0.weights[w] = (char *) weights1 + w*ND1*element_size;
@@ -1946,7 +1945,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
     }
     NPY_END_THREADS;
 
-    
+
     /* Clean up. */
     Py_DECREF(x1_array);Py_DECREF(y1_array);Py_XDECREF(weights1_array);//x1/y1 (representing ra1,dec1) should not be NULL
     Py_XDECREF(x2_array);Py_XDECREF(y2_array);Py_XDECREF(weights2_array);//x2/y2 may be NULL (in case of autocorr)
@@ -1954,7 +1953,7 @@ static PyObject *countpairs_countpairs_theta_mocks(PyObject *self, PyObject *arg
     if(status != EXIT_SUCCESS) {
         Py_RETURN_NONE;
     }
-    
+
 #if 0
     /*---Output-Pairs-------------------------------------*/
     double theta_low = results.theta_upp[0];
@@ -1987,11 +1986,11 @@ static PyObject *countpairs_countspheres_vpf_mocks(PyObject *self, PyObject *arg
     //Error-handling is global in python2 -> stored in struct module_state _struct declared at the top of this file
 #if PY_MAJOR_VERSION < 3
     (void) self;
-    PyObject *module = NULL;//should not be used -> setting to NULL so any attempts to dereference will result in a crash. 
+    PyObject *module = NULL;//should not be used -> setting to NULL so any attempts to dereference will result in a crash.
 #else
     //In python3, self is simply the module object that was returned earlier by init
     PyObject *module = self;
-#endif    
+#endif
 
     //x1->ra (phi), y1-> declination (theta1), z1->cz (cz1)
     //x2->ra (ph2), y2-> declination (theta2), z2->cz (cz2)
@@ -2014,7 +2013,7 @@ static PyObject *countpairs_countspheres_vpf_mocks(PyObject *self, PyObject *arg
     int8_t xbin_ref=options.bin_refine_factors[0],
         ybin_ref=options.bin_refine_factors[1],
         zbin_ref=options.bin_refine_factors[2];
-    
+
     static char *kwlist[] = {
         "rmax",
         "nbins",
@@ -2063,7 +2062,7 @@ static PyObject *countpairs_countspheres_vpf_mocks(PyObject *self, PyObject *arg
 
         char msg[1024];
         int len=snprintf(msg, 1024,"ArgumentError: In vpf_mocks> Could not parse the arguments. Input parameters are: \n");
-        
+
         /* How many keywords do we have? Subtract 1 because of the last NULL */
         const size_t nitems = sizeof(kwlist)/sizeof(*kwlist) - 1;
         int status = print_kwlist_into_msg(msg, 1024, len, kwlist, nitems);
@@ -2071,7 +2070,7 @@ static PyObject *countpairs_countspheres_vpf_mocks(PyObject *self, PyObject *arg
             fprintf(stderr,"Error message does not contain all of the keywords\n");
         }
         countpairs_mocks_error_out(module,msg);
-        
+
         Py_RETURN_NONE;
     }
     /*This is for the fastest isa */
@@ -2087,20 +2086,20 @@ static PyObject *countpairs_countspheres_vpf_mocks(PyObject *self, PyObject *arg
         options.bin_refine_factors[2] = zbin_ref;
         set_bin_refine_scheme(&options, BINNING_CUST);//custom binning -> code will honor requested binning scheme
     }
-    
+
     size_t element_size;
     /* We have numpy arrays and all the required inputs*/
     /* How many data points are there? And are they all of floating point type */
     const int64_t ND1 = check_dims_and_datatype(module, x1_obj, y1_obj, z1_obj, NULL, &element_size);
     if(ND1 == -1) {
-        //Error has already been set -> simply return 
+        //Error has already been set -> simply return
         Py_RETURN_NONE;
     }
 
     size_t element_size2;
     const int64_t ND2 = check_dims_and_datatype(module, x2_obj, y2_obj, z2_obj, NULL, &element_size2);
     if(ND2 == -1) {
-        //Error has already been set -> simply return 
+        //Error has already been set -> simply return
         Py_RETURN_NONE;
     }
 
@@ -2112,7 +2111,7 @@ static PyObject *countpairs_countspheres_vpf_mocks(PyObject *self, PyObject *arg
         Py_RETURN_NONE;
     }
 
-    
+
     /* Interpret the input objects as numpy arrays. */
     const int requirements = NPY_ARRAY_IN_ARRAY;
     PyObject *x1_array = NULL, *y1_array = NULL, *z1_array = NULL;
@@ -2144,7 +2143,7 @@ static PyObject *countpairs_countspheres_vpf_mocks(PyObject *self, PyObject *arg
     /* Get pointers to the data as C-types. */
     void *phiD1=NULL, *thetaD1=NULL,*czD1=NULL;
     void *phiD2=NULL, *thetaD2=NULL,*czD2=NULL;
-    
+
     phiD1   = PyArray_DATA((PyArrayObject *) x1_array);
     thetaD1 = PyArray_DATA((PyArrayObject *) y1_array);
     czD1    = PyArray_DATA((PyArrayObject *) z1_array);
@@ -2155,7 +2154,7 @@ static PyObject *countpairs_countspheres_vpf_mocks(PyObject *self, PyObject *arg
 
     NPY_BEGIN_THREADS_DEF;
     NPY_BEGIN_THREADS;
-    
+
     results_countspheres_mocks results;
     options.float_type = element_size;
     double c_api_time = 0.0;
@@ -2180,7 +2179,7 @@ static PyObject *countpairs_countspheres_vpf_mocks(PyObject *self, PyObject *arg
     if(status != EXIT_SUCCESS) {
         Py_RETURN_NONE;
     }
-    
+
 #if 0
     // Output the results
     const double rstep = rmax/(double)nbin ;

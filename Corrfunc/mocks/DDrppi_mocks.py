@@ -3,7 +3,8 @@
 
 """
 Python wrapper around the C extension for the pair counter in
-``mocks/DDrppi``. This python wrapper is :py:mod:`Corrfunc.mocks.DDrppi_mocks`
+``mocks/DDrppi_mocks/``. This python wrapper is 
+:py:mod:`Corrfunc.mocks.DDrppi_mocks`
 """
 
 from __future__ import (division, print_function, absolute_import,
@@ -21,7 +22,7 @@ def DDrppi_mocks(autocorr, cosmology, nthreads, pimax, binfile,
                  fast_divide=False, xbin_refine_factor=2,
                  ybin_refine_factor=2, zbin_refine_factor=1,
                  max_cells_per_dim=100,
-                 c_api_timer=False, isa='fastest', weight_type=None):
+                 c_api_timer=False, isa=r'fastest', weight_type=None):
     """
     Calculate the 2-D pair-counts corresponding to the projected correlation
     function, :math:`\\xi(r_p, \pi)`. Pairs which are separated by less
@@ -37,10 +38,13 @@ def DDrppi_mocks(autocorr, cosmology, nthreads, pimax, binfile,
     Returns a numpy structured array containing the pair counts for the
     specified bins.
 
-    Note, that this module only returns pair counts and not the actual
-    correlation function :math:`\\xi(r_p, \pi)`. See the
-    ``mocks/DDrppi/wprp_mocks.c`` for computing :math:`wp(r_p)` from
-    the pair counts returned.
+
+    .. note:: that this module only returns pair counts and not the actual
+       correlation function :math:`\\xi(r_p, \pi)` or :math:`wp(r_p)`. See the
+       utilities :py:mod:`Corrfunc.utils.convert_3d_counts_to_cf` and
+       :py:mod:`Corrfunc.utils.convert_rp_pi_counts_to_wp` for computing 
+       :math:`\\xi(r_p, \pi)` and :math:`wp(r_p)` respectively from the 
+       pair counts.
 
     Parameters
     -----------
@@ -70,12 +74,14 @@ def DDrppi_mocks(autocorr, cosmology, nthreads, pimax, binfile,
 
     pimax: double
         A double-precision value for the maximum separation along
-        the Z-dimension. Note that only pairs with ``0 <= dz < pimax``
-        are counted (no equality).
+        the Z-dimension. 
 
         Distances along the :math:`\\pi` direction are binned with unit
         depth. For instance, if ``pimax=40``, then 40 bins will be created
         along the ``pi`` direction.
+
+
+    .. note:: Only pairs with ``0 <= dz < pimax`` are counted (no equality).
 
     binfile: string or an list/array of floats
        For string input: filename specifying the ``rp`` bins for
@@ -113,11 +119,11 @@ def DDrppi_mocks(autocorr, cosmology, nthreads, pimax, binfile,
        If is_comoving_dist is set, then ``CZ1`` is interpreted as the
        co-moving distance, rather than `cz`.
        
-   weights1: array_like, real (float/double), optional
-        A scalar, or an array of weights of shape (n_weights, n_positions) or (n_positions,).
-        `weight_type` specifies how these weights are used; results are returned
-        in the `weightavg` field.  If only one of weights1 and weights2 is
-        specified, the other will be set to uniform weights.
+    weights1: array_like, real (float/double), optional
+       A scalar, or an array of weights of shape (n_weights, n_positions) or (n_positions,).
+       `weight_type` specifies how these weights are used; results are returned
+       in the `weightavg` field.  If only one of weights1 and weights2 is
+       specified, the other will be set to uniform weights.
 
     RA2: array-like, real (float/double)
         The array of Right Ascensions for the second set of points. RA's
@@ -158,11 +164,13 @@ def DDrppi_mocks(autocorr, cosmology, nthreads, pimax, binfile,
 
     output_rpavg: boolean (default false)
         Boolean flag to output the average ``rp`` for each bin. Code will
-        run slower if you set this flag. Also, note, if you are calculating
-        in single-precision, ``rpavg`` will suffer from numerical loss of
-        precision and can not be trusted. If you need accurate ``rpavg``
-        values, then pass in double precision arrays for the particle
-        positions.
+        run slower if you set this flag. Also, 
+
+
+    .. note:: If you are calculating in single-precision, ``rpavg`` will 
+        suffer from numerical loss of precision and can not be trusted. If 
+        you need accurate ``rpavg`` values, then pass in double precision 
+        arrays for the particle positions.
 
     fast_divide: boolean (default false)
         Boolean flag to replace the division in ``AVX`` implementation with an
@@ -374,16 +382,7 @@ def DDrppi_mocks(autocorr, cosmology, nthreads, pimax, binfile,
                               (bytes_to_native_str(b'pimax'), np.float),
                               (bytes_to_native_str(b'npairs'), np.uint64),
                               (bytes_to_native_str(b'weightavg'), np.float)])
-
-    nbin = len(extn_results)
-    results = np.zeros(nbin, dtype=results_dtype)
-    for ii, r in enumerate(extn_results):
-        results['rmin'][ii] = r[0]
-        results['rmax'][ii] = r[1]
-        results['rpavg'][ii] = r[2]
-        results['pimax'][ii] = r[3]
-        results['npairs'][ii] = r[4]
-        results['weightavg'][ii] = r[5]
+    results = np.array(extn_results, dtype=results_dtype)
 
     if not c_api_timer:
         return results

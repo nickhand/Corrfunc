@@ -3,7 +3,7 @@
 
 """
 Python wrapper around the C extension for the pair counter in
-``theory/xi_of_r``. This wrapper is in :py:mod:`Corrfunc.theory.DD`
+``theory/DD/``. This wrapper is in :py:mod:`Corrfunc.theory.DD`
 """
 
 from __future__ import (division, print_function, absolute_import,
@@ -17,7 +17,7 @@ def DD(autocorr, nthreads, binfile, X1, Y1, Z1, weights1=None, periodic=True,
        X2=None, Y2=None, Z2=None, weights2=None, verbose=False, boxsize=0.0,
        output_ravg=False, xbin_refine_factor=2, ybin_refine_factor=2,
        zbin_refine_factor=1, max_cells_per_dim=100,
-       c_api_timer=False, isa='fastest', weight_type=None):
+       c_api_timer=False, isa=r'fastest', weight_type=None):
     """
     Calculate the 3-D pair-counts corresponding to the real-space correlation
     function, :math:`\\xi(r)`.
@@ -25,9 +25,11 @@ def DD(autocorr, nthreads, binfile, X1, Y1, Z1, weights1=None, periodic=True,
     If ``weights`` are provided, the resulting pair counts are weighted.  The
     weighting scheme depends on ``weight_type``.
 
-    Note, that this module only returns pair counts and not the actual
-    correlation function :math:`\\xi(r)`. See the ``mocks/wtheta/wtheta.c``
-    for computing :math:`\\xi(r)` from the pair counts returned.
+
+    .. note:: This module only returns pair counts and not the actual
+       correlation function :math:`\\xi(r)`. See 
+       :py:mod:`Corrfunc.utils.convert_3d_counts_to_cf` for computing 
+       for computing :math:`\\xi(r)` from the pair counts returned.
 
     Parameters
     -----------
@@ -83,10 +85,13 @@ def DD(autocorr, nthreads, binfile, X1, Y1, Z1, weights1=None, periodic=True,
 
     output_ravg: boolean (default false)
        Boolean flag to output the average ``r`` for each bin. Code will
-       run slower if you set this flag. Also, note, if you are calculating
-       in single-precision, ``ravg`` will suffer from numerical loss of
-       precision and can not be trusted. If you need accurate ``ravg``
-       values, then pass in double precision arrays for the particle positions.
+       run slower if you set this flag. 
+
+
+    .. note:: If you are calculating in single-precision, ``ravg`` will 
+       suffer from numerical loss of precision and can not be trusted. 
+       If you need accurate ``ravg`` values, then pass in double precision 
+       arrays for the particle positions.
 
     (xyz)bin_refine_factor: integer, default is (2,2,1); typically within [1-3]
        Controls the refinement on the cell sizes. Can have up to a 20% impact
@@ -236,17 +241,7 @@ def DD(autocorr, nthreads, binfile, X1, Y1, Z1, weights1=None, periodic=True,
                               (bytes_to_native_str(b'ravg'), np.float),
                               (bytes_to_native_str(b'npairs'), np.uint64),
                               (bytes_to_native_str(b'weightavg'), np.float)])
-
-    nbin = len(extn_results)
-    results = np.zeros(nbin, dtype=results_dtype)
-
-    for ii, r in enumerate(extn_results):
-        results['rmin'][ii] = r[0]
-        results['rmax'][ii] = r[1]
-        results['ravg'][ii] = r[2]
-        results['npairs'][ii] = r[3]
-        results['weightavg'][ii] = r[4]
-
+    results = np.array(extn_results, dtype=results_dtype)
     if not c_api_timer:
         return results
     else:

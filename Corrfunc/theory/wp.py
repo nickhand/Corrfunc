@@ -17,7 +17,7 @@ __all__ = ('wp', 'find_fastest_wp_bin_refs', )
 def find_fastest_wp_bin_refs(boxsize, pimax, nthreads, binfile, X, Y, Z,
                              verbose=False, output_rpavg=False,
                              max_cells_per_dim=100,
-                             isa='fastest',
+                             isa=r'fastest',
                              maxbinref=3, nrepeats=3,
                              return_runtimes=False):
 
@@ -34,14 +34,13 @@ def find_fastest_wp_bin_refs(boxsize, pimax, nthreads, binfile, X, Y, Z,
 
     pimax: double
        A double-precision value for the maximum separation along
-       the Z-dimension. Note that only pairs with ``0 <= dz < pimax``
-       are counted (no equality).
+       the Z-dimension. 
+
+
+    .. note:: Only pairs with ``0 <= dz < pimax`` are counted (no equality).
 
     nthreads: integer
        Number of threads to use.
-
-    somethinghere: integer
-       testing reload
 
     binfile: string or an list/array of floats
        For string input: filename specifying the ``rp`` bins for
@@ -70,10 +69,13 @@ def find_fastest_wp_bin_refs(boxsize, pimax, nthreads, binfile, X, Y, Z,
 
     output_rpavg: boolean (default false)
        Boolean flag to output the average ``rp`` for each bin. Code will
-       run slower if you set this flag. Also, note, if you are calculating
-       in single-precision, ``rpavg`` will suffer from numerical loss of
-       precision and can not be trusted. If you need accurate ``rpavg``
-       values, then pass in double precision arrays for ``XYZ``.
+       run slower if you set this flag. 
+
+
+    .. note:: If you are calculating in single-precision, ``rpavg`` will 
+        suffer from numerical loss of precision and can not be trusted. If 
+        you need accurate ``rpavg`` values, then pass in double precision 
+        arrays for the particle positions.
 
     max_cells_per_dim: integer, default is 100, typical values in [50-300]
        Controls the maximum number of cells per dimension. Total number of
@@ -148,8 +150,8 @@ def find_fastest_wp_bin_refs(boxsize, pimax, nthreads, binfile, X, Y, Z,
     >>> print(best) # doctest:+SKIP
     (2, 2, 1)
 
-    **Note** Since the result might change depending on the computer, doctest
-    is skipped for this function.
+    .. note:: Since the result might change depending on the computer, doctest
+        is skipped for this function.
 
     """
     try:
@@ -295,10 +297,11 @@ def wp(boxsize, pimax, nthreads, binfile, X, Y, Z,
     If ``weights`` are provided, the resulting correlation function
     is weighted.  The weighting scheme depends on ``weight_type``.
 
-    Note that pairs are double-counted. And if ``rpmin`` is set to
-    0.0, then all the self-pairs (i'th particle with itself) are
-    added to the first bin => minimum number of pairs in the first bin
-    is the total number of particles.
+
+    .. note:: Pairs are double-counted. And if ``rpmin`` is set to
+       0.0, then all the self-pairs (i'th particle with itself) are
+       added to the first bin => minimum number of pairs in the first bin
+       is the total number of particles.
 
     Parameters
     -----------
@@ -309,8 +312,10 @@ def wp(boxsize, pimax, nthreads, binfile, X, Y, Z,
 
     pimax: double
        A double-precision value for the maximum separation along
-       the Z-dimension. Note that only pairs with ``0 <= dz < pimax``
-       are counted (no equality).
+       the Z-dimension. 
+
+
+    .. note:: Only pairs with ``0 <= dz < pimax`` are counted (no equality).
 
     nthreads: integer
        Number of threads to use.
@@ -347,10 +352,13 @@ def wp(boxsize, pimax, nthreads, binfile, X, Y, Z,
 
     output_rpavg: boolean (default false)
        Boolean flag to output the average ``rp`` for each bin. Code will
-       run slower if you set this flag. Also, note, if you are calculating
-       in single-precision, ``rpavg`` will suffer from numerical loss of
-       precision and can not be trusted. If you need accurate ``rpavg``
-       values, then pass in double precision arrays for ``XYZ``.
+       run slower if you set this flag. 
+
+
+    .. note:: If you are calculating in single-precision, ``rpavg`` will 
+        suffer from numerical loss of precision and can not be trusted. If 
+        you need accurate ``rpavg`` values, then pass in double precision 
+        arrays for the particle positions.
 
     (xyz)bin_refine_factor: integer, default is (2,2,1); typically within [1-3]
        Controls the refinement on the cell sizes. Can have up to a 20% impact
@@ -387,8 +395,8 @@ def wp(boxsize, pimax, nthreads, binfile, X, Y, Z,
        benchmarking, then the string supplied here gets translated into an
        ``enum`` for the instruction set defined in ``utils/defs.h``.
        
-   weight_type: string, optional
-        The type of weighting to apply.  One of ["pair_product", None].  Default: None.
+    weight_type: string, optional
+         The type of weighting to apply.  One of ["pair_product", None].  Default: None.
 
 
     Returns
@@ -399,7 +407,8 @@ def wp(boxsize, pimax, nthreads, binfile, X, Y, Z,
        for each radial specified in the ``binfile``. If ``output_rpavg`` is not
        set then ``rpavg`` will be set to 0.0 for all bins; similarly for ``weightavg``.
        ``wp`` contains the projected correlation function while ``npairs`` contains the
-       number of unique pairs in that bin.
+       number of unique pairs in that bin.  If using weights, ``wp`` will be weighted
+       while ``npairs`` will not be.
        
     api_time: float, optional
        Only returned if ``c_api_timer`` is set.  ``api_time`` measures only the time spent

@@ -4,7 +4,7 @@
 """
 Python wrapper around the C extension for the theoretical 3-D
 real-space correlation function, :math:`\\xi(r)`. Corresponding
-C routines are in ``theory/xi/``, python interface is
+C routines are in ``theory/xi/``, python interface is 
 :py:mod:`Corrfunc.theory.xi`.
 """
 
@@ -19,7 +19,7 @@ def xi(boxsize, nthreads, binfile, X, Y, Z,
        weights=None, weight_type=None, verbose=False, output_ravg=False,
        xbin_refine_factor=2, ybin_refine_factor=2,
        zbin_refine_factor=1, max_cells_per_dim=100,
-       c_api_timer=False, isa='fastest'):
+       c_api_timer=False, isa=r'fastest'):
     """
     Function to compute the projected correlation function in a
     periodic cosmological box. Pairs which are separated by less
@@ -28,10 +28,11 @@ def xi(boxsize, nthreads, binfile, X, Y, Z,
     If ``weights`` are provided, the resulting correlation function
     is weighted.  The weighting scheme depends on ``weight_type``.
 
-    Note that pairs are double-counted. And if ``rmin`` is set to
-    0.0, then all the self-pairs (i'th particle with itself) are
-    added to the first bin => minimum number of pairs in the first bin
-    is the total number of particles.
+
+    .. note:: Pairs are double-counted. And if ``rmin`` is set to
+       0.0, then all the self-pairs (i'th particle with itself) are
+       added to the first bin => minimum number of pairs in the first bin
+       is the total number of particles.
 
     Parameters
     -----------
@@ -66,19 +67,22 @@ def xi(boxsize, nthreads, binfile, X, Y, Z,
        are double precision arrays (C double type).
        
     weights: array_like, real (float/double), optional
-        A scalar, or an array of weights of shape (n_weights, n_positions) or (n_positions,).
-        `weight_type` specifies how these weights are used; results are returned
-        in the `weightavg` field.
+        A scalar, or an array of weights of shape (n_weights, n_positions) or 
+        (n_positions,). `weight_type` specifies how these weights are used; 
+        results are returned in the `weightavg` field.
 
     verbose: boolean (default false)
        Boolean flag to control output of informational messages
 
     output_ravg: boolean (default false)
        Boolean flag to output the average ``r`` for each bin. Code will
-       run slower if you set this flag. Also, note, if you are calculating
-       in single-precision, ``ravg`` will suffer from numerical loss of
-       precision and can not be trusted. If you need accurate ``ravg``
-       values, then pass in double precision arrays for ``XYZ``.
+       run slower if you set this flag. 
+
+
+    .. note:: If you are calculating in single-precision, ``rpavg`` will 
+        suffer from numerical loss of precision and can not be trusted. If 
+        you need accurate ``rpavg`` values, then pass in double precision 
+        arrays for the particle positions.
 
     (xyz)bin_refine_factor: integer, default is (2,2,1); typically within [1-3]
        Controls the refinement on the cell sizes. Can have up to a 20% impact
@@ -107,8 +111,8 @@ def xi(boxsize, nthreads, binfile, X, Y, Z,
        benchmarking, then the string supplied here gets translated into an
        ``enum`` for the instruction set defined in ``utils/defs.h``.
        
-    weight_type: string, optional
-        The type of weighting to apply.  One of ["pair_product", None].  Default: None.
+    weight_type: string, optional, Default: None.
+        The type of weighting to apply.  One of ["pair_product", None].  
 
 
     Returns
@@ -119,11 +123,12 @@ def xi(boxsize, nthreads, binfile, X, Y, Z,
        each radial specified in the ``binfile``. If ``output_ravg`` is not
        set then ``ravg`` will be set to 0.0 for all bins; similarly for ``weightavg``.
        ``xi`` contains the correlation function while ``npairs`` contains the number of
-       pairs in that bin.
+       pairs in that bin.  If using weights, ``xi`` will be weighted while ``npairs``
+       will not be.
 
-   api_time: float, optional
-       Only returned if ``c_api_timer`` is set.  ``api_time`` measures only the time spent
-       within the C library and ignores all python overhead.
+    api_time: float, optional
+        Only returned if ``c_api_timer`` is set.  ``api_time`` measures only the time spent
+        within the C library and ignores all python overhead.
 
     Example
     --------
@@ -215,17 +220,7 @@ def xi(boxsize, nthreads, binfile, X, Y, Z,
                               (bytes_to_native_str(b'xi'), np.float),
                               (bytes_to_native_str(b'npairs'), np.uint64),
                               (bytes_to_native_str(b'weightavg'), np.float)])
-
-    nbin = len(extn_results)
-    results = np.zeros(nbin, dtype=results_dtype)
-
-    for ii, r in enumerate(extn_results):
-        results['rmin'][ii] = r[0]
-        results['rmax'][ii] = r[1]
-        results['ravg'][ii] = r[2]
-        results['xi'][ii] = r[3]
-        results['npairs'][ii] = r[4]
-        results['weightavg'][ii] = r[5]
+    results = np.array(extn_results, dtype=results_dtype)
 
     if not c_api_timer:
         return results

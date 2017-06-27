@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 """
 Wrapper for all clustering statistic calculations on galaxies
 in a mock catalog.

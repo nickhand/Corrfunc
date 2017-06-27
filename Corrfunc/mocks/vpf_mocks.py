@@ -3,7 +3,7 @@
 
 """
 Python wrapper around the C extension for the counts-in-cells
-for positions on the sky. Corresponding C codes are in ``mocks/vpf``
+for positions on the sky. Corresponding C codes are in ``mocks/vpf_mocks/``
 while the python wrapper is in :py:mod:`Corrfunc.mocks.vpf_mocks`
 """
 
@@ -21,7 +21,7 @@ def vpf_mocks(rmax, nbins, nspheres, numpN,
               verbose=False, is_comoving_dist=False,
               xbin_refine_factor=1, ybin_refine_factor=1,
               zbin_refine_factor=1, max_cells_per_dim=100,
-              c_api_timer=False, isa='fastest'):
+              c_api_timer=False, isa=r'fastest'):
     """
     Function to compute the counts-in-cells on points on the sky. Suitable
     for mock catalogs and observed galaxies.
@@ -60,7 +60,10 @@ def vpf_mocks(rmax, nbins, nspheres, numpN,
             4      p0      p1     p2     p3
          ======   ==========================
 
-       and so on...(note that p0 is the vpf).
+       and so on...
+
+
+    .. note:: p0 is the vpf
 
     threshold_ngb: integer
        Minimum number of random points needed in a ``rmax`` sphere such that it
@@ -77,7 +80,8 @@ def vpf_mocks(rmax, nbins, nspheres, numpN,
        exist but either ``rmax`` is too small or there are not enough centers
        then the file will be overwritten.
 
-       Note: If the centers file has to be written, the code will take
+    
+    .. note:: If the centers file has to be written, the code will take
        significantly longer to finish. However, subsequent runs can re-use
        that centers file and will be faster.
 
@@ -144,7 +148,8 @@ def vpf_mocks(rmax, nbins, nspheres, numpN,
        If ``is_comoving_dist`` is set, then ``CZ2`` is interpreted as the
        co-moving distance, rather than ``(Speed Of Light * Redshift)``.
 
-       *NOTE*: RAND_RA, RAND_DEC and RAND_CZ are only used when the
+     
+    .. note:: RAND_RA, RAND_DEC and RAND_CZ are only used when the
           ``centers_file``  needs to be written out. In that case, the
           RAND_RA, RAND_DEC, and RAND_CZ are used as random centers.
 
@@ -158,7 +163,10 @@ def vpf_mocks(rmax, nbins, nspheres, numpN,
 
     (xyz)bin_refine_factor: integer, default is (1,1,1); typically within [1-3]
        Controls the refinement on the cell sizes. Can have up to a 20% impact
-       on runtime. Note, since the counts in spheres calculation is symmetric
+       on runtime. 
+
+
+    .. note:: Since the counts in spheres calculation is symmetric
        in all 3 dimensions, the defaults are different from the clustering
        routines.
 
@@ -249,16 +257,16 @@ def vpf_mocks(rmax, nbins, nspheres, numpN,
     ...         print("{0:10.3f} ".format(pn), end="")
     ...         # doctest: +NORMALIZE_WHITESPACE
     ...     print("") # doctest: +NORMALIZE_WHITESPACE
-    1.0      0.999      0.001      0.000      0.000      0.000      0.000
-    2.0      0.992      0.007      0.001      0.000      0.000      0.000
-    3.0      0.982      0.009      0.005      0.002      0.001      0.000
-    4.0      0.975      0.006      0.006      0.005      0.003      0.003
-    5.0      0.971      0.004      0.003      0.003      0.004      0.003
-    6.0      0.967      0.003      0.003      0.001      0.003      0.002
-    7.0      0.962      0.004      0.002      0.003      0.002      0.001
-    8.0      0.958      0.004      0.002      0.003      0.001      0.002
-    9.0      0.953      0.003      0.003      0.002      0.003      0.001
-    10.0      0.950      0.003      0.002      0.002      0.001      0.002
+       1.0      0.999      0.001      0.000      0.000      0.000      0.000
+       2.0      0.992      0.007      0.001      0.000      0.000      0.000
+       3.0      0.982      0.009      0.005      0.002      0.001      0.000
+       4.0      0.975      0.006      0.006      0.005      0.003      0.003
+       5.0      0.971      0.004      0.003      0.003      0.004      0.003
+       6.0      0.967      0.003      0.003      0.001      0.003      0.002
+       7.0      0.962      0.004      0.002      0.003      0.002      0.001
+       8.0      0.958      0.004      0.002      0.003      0.001      0.002
+       9.0      0.953      0.003      0.003      0.002      0.003      0.001
+      10.0      0.950      0.003      0.002      0.002      0.001      0.002
 
     """
 
