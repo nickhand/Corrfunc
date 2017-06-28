@@ -24,13 +24,11 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
                  c_api_timer=False, isa='fastest', weight_type=None):
     """
     Calculate the 2-D pair-counts corresponding to the projected correlation
-    function, :math:`\\xi(s, \mu)`. Pairs which are separated by less
-    than the ``rp`` bins (specified in ``binfile``) in the
-    X-Y plane, and less than ``pimax`` in the Z-dimension are
-    counted. The input positions are expected to be on-sky co-ordinates.
-    This module is suitable for calculating correlation functions for mock
-    catalogs.
-    
+    function, :math:`\\xi(s, \mu)`. The pairs are counted in bins of
+    radial separation and angle to the line-of-sight (LOS). The input positions
+    are expected to be on-sky co-ordinates. This module is suitable for
+    calculating correlation functions for mock catalogs.
+
     If ``weights`` are provided, the resulting pair counts are weighted.  The
     weighting scheme depends on ``weight_type``.
 
@@ -70,10 +68,10 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
     binfile: string or an list/array of floats
        For string input: filename specifying the ``s`` bins for
        ``DDsmu_mocks``. The file should contain white-space separated values
-       of (rpmin, rpmax)  for each ``rp`` wanted. The bins do not need to be
+       of (smin, smax)  for each ``s`` wanted. The bins do not need to be
        contiguous but must be in increasing order (smallest bins come first).
 
-       For array-like input: A sequence of ``rp`` values that provides the
+       For array-like input: A sequence of ``s`` values that provides the
        bin-edges. For example,
        ``np.logspace(np.log10(0.1), np.log10(10.0), 15)`` is a valid
        input, specifying 15 (logarithmic) bins between 0.1 and 10.0. This
@@ -102,7 +100,7 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
 
        If is_comoving_dist is set, then ``CZ1`` is interpreted as the
        co-moving distance, rather than `cz`.
-       
+
    weights1: array_like, real (float/double), optional
         A scalar, or an array of weights of shape (n_weights, n_positions) or (n_positions,).
         `weight_type` specifies how these weights are used; results are returned
@@ -134,7 +132,7 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
         co-moving distance, rather than `cz`.
 
         Must be of same precision type as RA1/DEC1/CZ1.
-        
+
     weights2: array-like, real (float/double), optional
         Same as weights1, but for the second set of positions
 
@@ -186,7 +184,7 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
         always leave ``isa`` to the default value. And if you *are*
         benchmarking, then the string supplied here gets translated into an
         ``enum`` for the instruction set defined in ``utils/defs.h``.
-        
+
     weight_type: string, optional
         The type of weighting to apply.  One of ["pair_product", None].  Default: None.
 
@@ -198,9 +196,8 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
        A numpy structured array containing [smin, smax, savg, mumax, npairs, weightavg]
        for each separation bin specified in the ``binfile``. If ``output_savg`` is
        not set, then ``savg`` will be set to 0.0 for all bins; similarly for
-       ``weightavg``. ``npairs``
-       contains the number of pairs in that bin and can be used to compute the
-       actual :math:`\\xi(s, \mu)` or :math:`wp(rp)` by combining with
+       ``weightavg``. ``npairs`` contains the number of pairs in that bin and
+       can be used to compute the actual :math:`\\xi(s, \mu)` by combining with
        (DR, RR) counts.
 
     api_time: float, optional
@@ -219,7 +216,7 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
     from Corrfunc.utils import translate_isa_string_to_enum, fix_ra_dec,\
         return_file_with_rbins
     from future.utils import bytes_to_native_str
-    
+
     # Broadcast scalar weights to arrays
     if weights1 is not None:
         weights1 = np.atleast_1d(weights1)
@@ -231,7 +228,7 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
             msg = "Must pass valid arrays for RA2/DEC2/CZ2 for "\
                   "computing cross-correlation"
             raise ValueError(msg)
-            
+
         # If only one set of points has weights, set the other to uniform weights
         if weights1 is None and weights2 is not None:
             weights1 = np.ones_like(weights2)
@@ -246,7 +243,7 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
     fix_ra_dec(RA1, DEC1)
     if autocorr == 0:
         fix_ra_dec(RA2, DEC2)
-        
+
     # Passing None parameters breaks the parsing code, so avoid this
     kwargs = {}
     for k in ['weights1', 'weights2', 'weight_type', 'RA2', 'DEC2', 'CZ2']:
@@ -302,4 +299,3 @@ def DDsmu_mocks(autocorr, cosmology, nthreads, Nmu, binfile,
 if __name__ == '__main__':
     import doctest
     doctest.testmod()
-    
