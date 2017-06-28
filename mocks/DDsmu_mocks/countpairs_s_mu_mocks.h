@@ -24,16 +24,16 @@ extern "C" {
         int nbin;
         int nmubin;
     } results_countpairs_mocks_s_mu;
-    
+
     int countpairs_mocks_s_mu(const int64_t ND1, void *theta1, void *phi1, void *czD1,
-                         const int64_t ND2, void *theta2, void *phi2, void *czD2,
-                         const int numthreads,
-                         const int autocorr,
-                         const char *binfile,
-                         const int Nmu,
-                         const int cosmology,
-                         results_countpairs_mocks_s_mu *results,
-                         struct config_options *options, struct extra_options *extra);
+                              const int64_t ND2, void *theta2, void *phi2, void *czD2,
+                              const int numthreads,
+                              const int autocorr,
+                              const char *binfile,
+                              const int Nmu,
+                              const int cosmology,
+                              results_countpairs_mocks_s_mu *results,
+                              struct config_options *options, struct extra_options *extra);
 
     void free_results_mocks_s_mu(results_countpairs_mocks_s_mu *results);
 
